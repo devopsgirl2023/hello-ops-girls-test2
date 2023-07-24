@@ -27,7 +27,7 @@ export class World {
         this.info = {
             groundHeight: 100,
             gravity: new Vector2D(0, 0.68),
-            spawnPoint: new Vector2D(25, this.screenSize.height - 64 * 3)
+            spawnPoint: new Vector2D(25, this.screenSize.height - 50 * 3)
         };
         /* Initialize the main entities for the game. */
         this.ground = new Ground(this.info.groundHeight, this.screenSize);
