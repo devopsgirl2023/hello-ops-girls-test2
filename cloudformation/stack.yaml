@@ -31,6 +31,13 @@ Resources:
           yum update -y
           amazon-linux-extras install nginx1 -y
           systemctl enable --now nginx
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: !Sub ${AWS::StackName}-profile
+      Path: /
+      Roles:
+        - EC2-AssumeRoleWithEC2ForDevopsGirls2023
   EIP:
     Type: AWS::EC2::EIP
   EIPAssociation:
