@@ -53,8 +53,8 @@ jobs:
         run: |
           cd ansible
 
-          sed -i "s/AWS_ACCOUNT/${AWS_ACCOUNT}/" roles/app/vars/main.yaml
-          sed -i "s/DOMAIN_NAME/${DOMAIN_NAME}/" roles/nginx/vars/main.yaml
+          sed -i "s/AWS_ACCOUNT/${AWS_ACCOUNT}/" roles/app/vars/main.yml
+          sed -i "s/DOMAIN_NAME/${DOMAIN_NAME}/" roles/nginx/vars/main.yml
 
           ip=$(aws cloudformation describe-stacks --stack-name hello-ops-girls --query 'Stacks[0].Outputs[?OutputKey == `PrivateIP`].OutputValue' --output text)
           echo "${ip}" >> hosts.ini
