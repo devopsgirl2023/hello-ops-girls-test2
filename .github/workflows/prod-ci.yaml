@@ -3,11 +3,9 @@ run-name: prod-ci
 on:
   workflow_run:
     workflows: ["hello ops girls dev pipeline"]
-    branches: [main]
+    branches: [main, workshop-part3]
     types:
       - completed
-  push:
-    branches: [workshop-part3]
 
 env:
   AWS_ACCOUNT: "494526681395"
