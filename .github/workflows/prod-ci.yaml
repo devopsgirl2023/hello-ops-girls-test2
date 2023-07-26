@@ -51,5 +51,26 @@ jobs:
           else
             aws cloudformation update-stack --stack-name ${STACK_NAME} --template-body file://cloudformation/stack.yaml --parameters ParameterKey=SecurityGroupName,ParameterValue=devops-girls-2023 ParameterKey=KeyName,ParameterValue=devops-girls-2023 ParameterKey=HostedZoneId,ParameterValue=${HOSTED_ZONE_ID} ParameterKey=DomainName,ParameterValue=${DOMAIN_NAME}
           fi
+
+          counter=0
+          while [ ${counter} -lt 10 ]; do
+            status=$(aws cloudformation describe-stacks --stack-name ${STACK_NAME} --query 'Stacks[0].StackStatus' --output text)
+            
+            if [ "${status}" = "CREATE_COMPLETE" ]; then
+              echo "Stack create complete!"
+              exit 0
+            elif [ "${status}" = "UPDATE_COMPLETE" ]; then
+              echo "Stack update complete!"
+              exit 0
+            elif [ "${status}" = "UPDATE_ROLLBACK_COMPLETE" ]; then
+              echo "Stack update failed!"
+              exit 1
+            fi
+
+            sleep 30
+          done
+
+          echo "Wait condition timed out!"
+          exit 1
       - name: deploy application container
         run: "true"
