@@ -36,7 +36,10 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:latest
   deploy:
     runs-on: ubuntu-latest
+    needs: [release-image]
     env:
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       HOSTED_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
       DOMAIN_NAME: ${{ github.event.repository.name }}.${{ secrets.DOMAIN_NAME }}
       STACK_NAME: ${{ github.event.repository.name }}
@@ -47,4 +50,14 @@ jobs:
       - name: apply cloudformation stack
         run: aws cloudformation deploy --stack-name ${STACK_NAME} --template-file cloudformation/stack.yaml --parameter-overrides ParameterKey=SecurityGroupName,ParameterValue=devops-girls-2023 ParameterKey=KeyName,ParameterValue=devops-girls-2023 ParameterKey=HostedZoneId,ParameterValue=${HOSTED_ZONE_ID} ParameterKey=DomainName,ParameterValue=${DOMAIN_NAME} --capabilities CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset
       - name: deploy application container
-        run: "true"
+        run: |
+          cd ansible
+
+          sed -i "s/AWS_ACCOUNT/${AWS_ACCOUNT}/" roles/app/vars/main.yaml
+          sed -i "s/DOMAIN_NAME/${DOMAIN_NAME}/" roles/nginx/vars/main.yaml
+
+          ip=$(aws cloudformation describe-stacks --stack-name hello-ops-girls --query 'Stacks[0].Outputs[?OutputKey == `PrivateIP`].OutputValue' --output text)
+          echo "${ip}" >> hosts.ini
+
+          echo "${SSH_KEY}" | base64 -d > devops-girls-2023.pem
+          ansible-playbook --private-key devops-girls-2023.pem deploy.yml
