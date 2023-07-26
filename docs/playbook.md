@@ -142,22 +142,16 @@ aws cloudformation validate-template --template-body file://cloudformation/stack
 
 ### Step 3: 与 Pipeline 集成
 
-创建 Stack：
+部署（创建或更新）Stack：
 
 ```shell
-aws cloudformation create-stack --stack-name devops-girls-<> --template-body file://cloudformation/stack.yaml --parameters ParameterKey=SecurityGroupName,ParameterValue=<> ParameterKey=KeyName,ParameterValue=<> ParameterKey=HostedZoneId,ParameterValue=<> ParameterKey=DomainName,ParameterValue=<> --no-cli-pager
+aws cloudformation deploy --stack-name devops-girls-<> --template-file cloudformation/stack.yaml --parameters ParameterKey=SecurityGroupName,ParameterValue=<> ParameterKey=KeyName,ParameterValue=<> ParameterKey=HostedZoneId,ParameterValue=<> ParameterKey=DomainName,ParameterValue=<> --no-cli-pager
 ```
 
 获取 Stack 信息：
 
 ```shell
 aws cloudformation describe-stacks --stack-name devops-girls-<> --query 'Stacks[0].Outputs' --no-cli-pager
-```
-
-更新 Stack：
-
-```shell
-aws cloudformation update-stack --stack-name devops-girls-<> --template-body file://cloudformation/stack.yaml ...
 ```
 
 删除 Stack：
