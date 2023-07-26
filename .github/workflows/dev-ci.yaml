@@ -1,9 +1,6 @@
 name: hello ops girls dev pipeline
 run-name: dev-ci
-on:
-  push:
-    branches:
-      - '*'
+on: {}
 
 env:
   AWS_ACCOUNT: "494526681395"
