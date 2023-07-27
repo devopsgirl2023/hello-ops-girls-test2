@@ -25,6 +25,7 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroups:
         - !Ref SecurityGroupName
+      IamInstanceProfile: !Ref InstanceProfile
       UserData:
         Fn::Base64: |
           #!/bin/bash
