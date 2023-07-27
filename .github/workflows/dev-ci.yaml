@@ -24,7 +24,7 @@ jobs:
       - name: Build and push dev image to ECR
         env:
           REGISTRY: ${{ steps.aws-auth.outputs.registry }}
-          REPOSITORY: devopsgirl2023/hello-ops-girl
+          REPOSITORY: devopsgirl2023/hello-ops-girl-test2
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
