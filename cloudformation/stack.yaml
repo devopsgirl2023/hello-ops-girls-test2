@@ -32,6 +32,8 @@ Resources:
           yum update -y
           amazon-linux-extras install nginx1 -y
           systemctl enable --now nginx
+      Tags:
+        - Name: cloudformation-test02
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
