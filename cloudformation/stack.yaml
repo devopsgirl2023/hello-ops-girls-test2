@@ -33,7 +33,8 @@ Resources:
           amazon-linux-extras install nginx1 -y
           systemctl enable --now nginx
       Tags:
-        - Name: cloudformation-test02
+        - Key: "Name"
+          Value: "cloudformation-ec2-test02"
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
