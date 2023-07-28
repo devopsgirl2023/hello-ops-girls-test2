@@ -11,7 +11,7 @@
 ## One-time setup
 - fork本仓库, 并clone到本地
 ```shell
-git clone https://github.com/devopsgirl2023/hello-ops-girls-demo-<Your name>
+git clone git@github.com:devopsgirl2023/hello-ops-girls-demo-<Your name>.git
 ```
 
 ## Workshop Roadmap
@@ -19,7 +19,7 @@ git clone https://github.com/devopsgirl2023/hello-ops-girls-demo-<Your name>
 
 ## WorkShop Part1 - GitHub actions CI in Docker
 
-### Step 1: Write a Dockerfile
+### Step 1: 创建Dockerfile
 ```dockerfile
 FROM node:19-slim@sha256:f58f1fcf5c9ff9e3752993edb4ed6dbd35697124c85a43f3b97aa054500b0534
 WORKDIR /app
@@ -32,24 +32,24 @@ EXPOSE 8000
 CMD ["yarn", "start"]
 ```
 
-### Step 2: Build and run your docker from local
+### Step 2: 本地运行docker build及docker run
 ```shell
 # Build your docker image
 $ docker build -t ops-girls-demo:dev .
 # Run a docker container
 $ docker run --rm -p 8000:8000 ops-girls-demo:dev
 $ docker ps
-# 浏览器访问：http://localhost:8000/public/
+# 浏览器访问：http://127.0.0.1:8000/
 ```
 
-### Step 3: Trigger a CI workflow 
+### Step 3: 触发CI workflow 
 提交并push你的Dockerfile。你应该会在你的repo->Actions里看到一条被触发的流水线。
 ```shell
 git add .
 git commit -m "Added somthing new" 
 git push origin main
 ```
-### Step 4: Create a build and test job in the workflow 
+### Step 4: 在workflow中创建build job及test job
 完善CI流水线，添加build和test job。在CI中实现构建、推送镜像，并成功运行单元测试。build步骤参考：
 ```yaml
 jobs:
@@ -95,11 +95,11 @@ jobs:
 ### step7: 启动 docker
 `docker run --name hello-ops-girl-app -d -p 8000:8000 {{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com/devopsgirl2023/{{ ecr_repo }}:latest`
 ### step8: 安装 nginx
-`amazon-linux-extras install nginx1 -y `
+`sudo amazon-linux-extras install nginx1 -y `
 ### step9: 启动 nginx
 ```
-systemctl enable nginx
-systemctl start nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
 ```
 ### step10: 访问网站
 由于此时还没有配置完成反向代理，那么这个时候只能看到 nginx 界面
@@ -111,7 +111,7 @@ in http.server add
 
 
 location / {
-            proxy_pass http://localhost:8000/public/;
+            proxy_pass http://localhost:8000;
         }
 ```
 ### step12: 再次访问网站
